@@ -21,12 +21,13 @@ except FileNotFoundError:
     print('Profile não existe')
     sys.exit(4)
 
-# MONGODB
-mg_client = pymongo.MongoClient(properties['mongoAddr'])
-pdt_db = mg_client["baseImages"]
-pdt_col = pdt_db["produtos"]
+# # MONGODB
+# myclient = pymongo.MongoClient(properties['mongoAddr'])
+# mybd = myclient["bd_img"]
+# mycol = mybd["Imagens"]
 
-
-@app.route("/")
+@app.route("/test", methods=['GET', 'POST'])
 def hello():
-    return "Hello World!"
+    # dado = {"_id": 1, "name": "test", "base64": "asdasdasdsadasd"}
+    # x = mycol.insert(dado)
+    return "Sucess"
