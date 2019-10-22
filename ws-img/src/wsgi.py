@@ -1,4 +1,4 @@
-from ws_img import application
+from api import app
 
 if __name__ == "__main__":
-    application.run()
+    app.run()
