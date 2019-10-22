@@ -8,4 +8,4 @@
 5. Criando o banco `use exemplo`
 * Para criar o banco efetivamente, você precisa fazer um insert
 6. Para inserir os dados `db.exemplo.save({nome: "Deyveson", sobrenome: "Willian"})`
-7. Podemos consultar dados usando algo como o seguinte `db.exemplo.find({nome: "Nic"})`
+7. Podemos consultar dados usando algo como o seguinte `db.exemplo.find({nome: "Deyveson"})`
