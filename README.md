@@ -1,1 +1,1 @@
-## Projeto do artigo `Otimizando o consumo de imagens com API REST em Python - Na prática !`
+## Otimizando o consumo de imagens com API REST em Python - Na prática !
