@@ -27,20 +27,11 @@ mybd = myclient["bd_img"]
 mycol = mybd["Imagens"]
 
 @app.route("/test", methods=['GET', 'POST'])
-def hello():
-    """
-        Função test de persistencia MongoDB
+def test():
 
-        :argument:
-            
-        :return:
-            Sucess
+    print("Minha primeira rota")
 
-    """
-    print("Chegou aqui")
-    dado = {"_id": 2, "name": "test", "base64": "asdasdasdsadasd"}
-    x = mycol.insert(dado)
-    return "Sucess"
+    return "Hello Word"
 
 @app.route("/findImage", methods=['GET', 'POST'])
 def searchImage(codigo: int, name: str):
