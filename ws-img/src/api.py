@@ -28,6 +28,16 @@ mycol = mybd["Imagens"]
 
 @app.route("/test", methods=['GET', 'POST'])
 def hello():
+    """
+        Função test de persistencia MongoDB
+
+        :argument:
+            
+        :return:
+            Sucess
+
+    """
+    print("Chegou aqui")
     dado = {"_id": 2, "name": "test", "base64": "asdasdasdsadasd"}
     x = mycol.insert(dado)
     return "Sucess"
