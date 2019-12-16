@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 import base64
 import pymongo
@@ -26,12 +26,13 @@ myclient = pymongo.MongoClient(properties['mongoAddr'])
 mybd = myclient["bd_img"]
 mycol = mybd["Imagens"]
 
-@app.route("/test", methods=['GET', 'POST'])
-def test():
-
-    print("Minha primeira rota")
-
-    return "Hello Word"
+@app.route('/get_image')
+def get_image():
+    if request.args.get('type') == '1':
+       filename = 'ok.gif'
+    else:
+       filename = 'error.gif'
+    return send_file(filename, mimetype='image/gif')
 
 @app.route("/findImage", methods=['GET', 'POST'])
 def searchImage(codigo: int, name: str):
