@@ -7,5 +7,5 @@
 4. Bancos de dados existentes `show dbs`
 5. Criando o banco `use exemplo`
 * Para criar o banco efetivamente, você precisa fazer um insert
-6. Para inserir os dados `db.exemplo.save({nome: "Deyveson", sobrenome: "Willian"})`
+6. Para inserir os dados `db.Imagens.save({"_id": 1, "Name": "Coca", "Img": "asdasd"})`
 7. Podemos consultar dados usando algo como o seguinte `db.exemplo.find({nome: "Deyveson"})`

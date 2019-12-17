@@ -29,35 +29,48 @@ mycol = mybd["Imagens"]
 @app.route('/get_image')
 def get_image():
     if request.args.get('type') == '1':
-       filename = 'ok.gif'
+       filename = 'ok.jpg'
     else:
        filename = 'error.gif'
-    return send_file(filename, mimetype='image/gif')
+    return send_file(filename, mimetype='image/jpg')
 
 @app.route("/findImage", methods=['GET', 'POST'])
-def searchImage(codigo: int, name: str):
+def searchImage():
 
-    data = buscaImg(codigo, name)
-    response = {}
+    data = []
+
+    for req in request.json:
+        print(req)
+        data.append(buscaImg(req['Codigo'], req['Name']))
 
     if len(data) > 0:
         
         return jsonify(data)
 
     elif len(data) == 0: 
+
+        data = mycol.find({})
+        response = []
+        
+        for value in data:
+            response.append(value)
        
-        response = compactTransformImg(codigo, name);
-        jsonify(response)
+        # response = compactTransformImg(codigo, name);
+        # jsonify(response)
 
-    else:
-        response["menssage"] = "Imagem não existe no servidor"
-        return jsonify(response)    
+    # else:
+    #     response["menssage"] = "Imagem não existe no servidor"
+   
+    return jsonify(response)
+   
 
+def buscaImg(codigo, name):
 
-def buscaImg(codigo: int, name: str):
-    query = {"_id": "{}".format(codigo),
-             "name": "{}".format(name)}
-    return mycol.find_one(query, {'_id': 0})
+    query1 = {"_id": codigo, "name": name}
+
+    response = mycol.find_one(query1)
+
+    return response
 
 
 def compactTransformImg(codigo: int, name: str):
