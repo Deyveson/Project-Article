@@ -14,6 +14,7 @@ CORS(app)
 profile = os.environ['PROFILE']
 properties = {}
 
+# LOADING PROPERTIES
 try:
     with open('./resources/profile-{}.properties'.format(profile)) as json_file:
         properties = json.load(json_file)
@@ -23,8 +24,8 @@ except FileNotFoundError:
 
 # CONNECT MONGODB
 myclient = pymongo.MongoClient(properties['mongoAddr'])
-mybd = myclient["bd_img"]
-mycol = mybd["Imagens"]
+mybd = myclient[properties['myclient']]
+mycol = mybd[properties['mybd']]
 
 @app.route('/get_image')
 def get_image():
@@ -36,30 +37,28 @@ def get_image():
 
 @app.route("/findImage", methods=['GET', 'POST'])
 def searchImage():
-
     data = []
 
     for req in request.json:
-        print(req)
         data.append(buscaImg(req['Codigo'], req['Name']))
 
-    if len(data) > 0:
+    if data[0] != None:
         
         return jsonify(data)
 
-    elif len(data) == 0: 
+    elif data[0] == None: 
 
-        data = mycol.find({})
-        response = []
+        # data = mycol.find({})
+        # response = []
         
-        for value in data:
-            response.append(value)
+        # for value in data:
+        #     response.append(value)
        
-        # response = compactTransformImg(codigo, name);
-        # jsonify(response)
+        response = compactTransformImg(int(req['Codigo']), req['Name']);
+        jsonify(response)
 
-    # else:
-    #     response["menssage"] = "Imagem não existe no servidor"
+    else:
+        response["menssage"] = "Imagem não existe no servidor"
    
     return jsonify(response)
    
@@ -73,17 +72,30 @@ def buscaImg(codigo, name):
     return response
 
 
-def compactTransformImg(codigo: int, name: str):
+def compactTransformImg(codigo, name):
 
-    arquivo = properties['diretorio'] + name + "/" + codigo + ".JPG"
+    """
+        Função para compacta, redimensionar a imagem, tranforma em base64 e salvar no banco de dados.
+
+        :argument:
+           codigo, name
+        :return:
+            Json contendo um array com _id, base64 e name.
+    """
+
+    arquivo = properties['diretorioIMG'] + str(name) + "/" + str(codigo) + ".JPG"
+
+    print("Param ~~~~~~~~~>", name, codigo)
+    print("Diretorio: ", arquivo)
+
     basewidth = 400
     img = Image.open(arquivo)
+   
     wpercent = (basewidth / float(img.size[0]))
     hsize = int((float(img.size[1]) * float(wpercent)))
     new_img = img.resize((basewidth, hsize), Image.ANTIALIAS)
-    new_img.save(properties['diretorio'] + name + "/newImg" + codigo + ".JPG", optimize=True)
-
-    new_arquivo = properties['diretorio'] + name + "/newImg" + codigo + ".JPG"
+    new_img.save(properties['diretorioIMG'] + name + "/newImg" + str(codigo) + ".JPG", optimize=True)
+    new_arquivo = properties['diretorioIMG'] + name + "/newImg" + str(codigo) + ".JPG"
 
     f = open(new_arquivo, 'rb')
     imgCompact = f.read()
