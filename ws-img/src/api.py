@@ -1,15 +1,21 @@
+import base64
+import json
+import os
+import sys
+
+import pymongo
+from PIL import Image
 from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
-import base64
-import pymongo
-import requests
-import os
-import json
-import sys
-from PIL import Image
+from flask_restplus import Api, Resource, Namespace
+from werkzeug.contrib.fixers import ProxyFix
 
 app = Flask(__name__)
+api = Api(app, version='1.0.1', title='Py-Image API', description='Image Controller')
+app.wsgi_app = ProxyFix(app.wsgi_app)
+ns = api.namespace('image', description='All operations  image')
 CORS(app)
+
 
 profile = os.environ['PROFILE']
 properties = {}
@@ -27,41 +33,56 @@ myclient = pymongo.MongoClient(properties['mongoAddr'])
 mybd = myclient[properties['myclient']]
 mycol = mybd[properties['mybd']]
 
-@app.route('/get_image')
-def get_image():
-    if request.args.get('type') == '1':
-       filename = 'ok.jpg'
-    else:
-       filename = 'error.gif'
-    return send_file(filename, mimetype='image/jpg')
 
-@app.route("/findImage", methods=['GET', 'POST'])
-def searchImage():
-    data = []
+@ns.route('/version')
+class Version (Resource):
+    def get(self):
+        """
+            Version project.
+        """
+        return api.version
 
-    for req in request.json:
-        data.append(buscaImg(req['Codigo'], req['Name']))
 
-    if data[0] != None:
-        
-        return jsonify(data)
+@ns.route('/get_image/<id>')
+class ImageDefault (Resource):
 
-    elif data[0] == None: 
+    def post(self, id):
+        print(id)
+        if id == '1':
+           filename = 'ok.jpg'
+        else:
+           filename = 'error.gif'
+        return send_file(filename, mimetype='image/jpg')
 
-        # data = mycol.find({})
-        # response = []
-        
-        # for value in data:
-        #     response.append(value)
-       
-        response = compactTransformImg(int(req['Codigo']), req['Name']);
-        jsonify(response)
 
-    else:
-        response["menssage"] = "Imagem não existe no servidor"
-   
-    return jsonify(response)
-   
+@ns.route('/findImage/<name>/<codigo>')
+class Compact (Resource):
+    def get(self, name, codigo):
+        data = []
+        response = {}
+
+        data.append(buscaImg(int(codigo), name))
+
+        if data[0] != None:
+
+          return jsonify(data)
+
+        elif data[0] == None:
+
+          # data = mycol.find({})
+          # response = []
+
+          # for value in data:
+          #     response.append(value)
+
+          response = compactTransformImg(int(codigo), name)
+          jsonify(response)
+
+        else:
+          response["menssage"] = "Imagem não existe no servidor"
+
+        return jsonify(response)
+
 
 def buscaImg(codigo, name):
 
