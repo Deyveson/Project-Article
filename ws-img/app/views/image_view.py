@@ -17,7 +17,7 @@ class Version(Resource):
 @ns.route('/get_image/<id>')
 class ImageDefault(Resource):
 
-    def post(self, id):
+    def get(self, id):
         if id == '1':
             filename = app.config['DIRETORIO']+'ok.jpg'
         else:
