@@ -24,12 +24,6 @@ def compactImage(name, codigo):
 
     elif data[0] == None:
 
-        # data = mycol.find({})
-        # response = []
-
-        # for value in data:
-        #     response.append(value)
-
         response = compactTransformImg(int(codigo), name)
         jsonify(response)
 
