@@ -24,6 +24,7 @@ def compactImage(name, codigo):
 
     elif data[0] == None:
 
+
         response = compactTransformImg(int(codigo), name)
         jsonify(response)
 
@@ -51,7 +52,11 @@ def compactTransformImg(codigo, name):
             Json contendo um array com _id, base64 e name.
     """
 
-    arquivo = app.config['DIRETORIO'] + str(name) + "/" + str(codigo) + ".JPG"
+    path = app.config['DIRETORIO'] + name
+
+    print(path)
+
+    arquivo = app.config['DIRETORIO'] + name + "/" + str(codigo) + ".JPG"
 
     basewidth = 400
     img = Image.open(arquivo)
