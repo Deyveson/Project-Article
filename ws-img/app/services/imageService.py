@@ -52,10 +52,6 @@ def compactTransformImg(codigo, name):
             Json contendo um array com _id, base64 e name.
     """
 
-    path = app.config['DIRETORIO'] + name
-
-    print(path)
-
     arquivo = app.config['DIRETORIO'] + name + "/" + str(codigo) + ".JPG"
 
     basewidth = 400

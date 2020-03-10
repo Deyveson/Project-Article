@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Deyveson/Project-Article.svg?branch=master)](https://travis-ci.org/Deyveson/Project-Article)
+
 ## Otimizando o consumo de imagens com API REST em Python - Na prática !
 
 'Monografia de conclusão de curso, Sistema de Informação - Fametro'
