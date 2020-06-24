@@ -6,6 +6,9 @@ services:
     ports: 
       - "27017:27017"
     restart: always
+    networks: 
+      rede-project:
+        ipv4_address: 10.0.0.2
 
   py-image:
     user: root
@@ -20,6 +23,9 @@ services:
       - mongo
     depends_on: 
       - mongo
+    networks: 
+      rede-project:
+        ipv4_address: 10.0.0.3
 
   mongo-express:
     image: mongo-express
@@ -27,4 +33,14 @@ services:
     ports:
       - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_SERVER: 192.168.101.126
+      ME_CONFIG_MONGODB_SERVER: mongo
+    networks: 
+      rede-project:
+        ipv4_address: 10.0.0.4
+
+networks: 
+  rede-project:
+    driver: bridge
+    ipam:
+      config: 
+        - subnet: 10.0.0.0/16
