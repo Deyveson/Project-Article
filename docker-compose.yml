@@ -14,13 +14,11 @@ services:
     user: root
     build:
       dockerfile: Dockerfile
-      context: .
+      context: ./
     ports: 
       - 5555:5555
     volumes: 
       - ./:/usr/src/app
-    links:
-      - mongo
     depends_on: 
       - mongo
     networks: 
