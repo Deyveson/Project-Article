@@ -32,3 +32,12 @@ class Compact(Resource):
         response = imageService.compactImage(name, codigo)
 
         return response
+
+@ns.route('/save/<name>/<codigo>/<base64>')
+class Compact(Resource):
+    def post(self, name, codigo, base64):
+        
+        response = imageService.imageSave(name, codigo, base64)
+
+        return response
+

@@ -41,6 +41,14 @@ def buscaImg(codigo, name):
 
     return response
 
+def imageSave(name, codigo, base64):
+
+    query = {"_id": codigo, "name": name, "base64": base64}
+
+    response = mycol.save(query)
+
+    return response
+
 
 def compactTransformImg(codigo, name):
     """
